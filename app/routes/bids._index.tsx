@@ -1,9 +1,10 @@
 import React from "react";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 
-import { getBids } from "~/models/bids.server";
+import { getAllBids, getBids } from "~/models/bids.server";
 import { Bids } from "@prisma/client";
+import FooterNav from "~/components/FooterNav";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   console.log("loader called");
@@ -12,7 +13,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cid = url.searchParams.get("collection_id");
   if (cid === null) {
     console.log("cid is null");
-    return json({ bids: [], id: "" });
+    const bids = await getAllBids();
+    return json({ bids, id: "" });
   }
 
   const id = parseInt(cid, 10);
@@ -41,7 +43,7 @@ export default function BidsIndex() {
 
       return (
         <li key={index}>
-          {bid.user_id} bid ${bid.price / 100} | [{bid.status}]
+          {bid.id} | [{bid.status}] | ${bid.price / 100}
         </li>
       );
     });
@@ -62,6 +64,8 @@ export default function BidsIndex() {
       <hr />
       <h5>BIDS</h5>
       <section>{renderBids()}</section>
+      <Link to={"/bid/create"}>Create New Bid</Link>
+      <FooterNav />
     </React.Fragment>
   );
 }

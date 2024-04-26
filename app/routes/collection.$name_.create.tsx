@@ -41,7 +41,7 @@ export default function CreateCollection() {
 
   return (
     <React.Fragment>
-      <Form key={"collection.name"} id="collection-up" method="put">
+      <Form key={"collection.name"} id="collection-up" method="post">
         <p>
           <span>Name</span>
           <input
