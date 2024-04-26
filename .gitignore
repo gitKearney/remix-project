@@ -3,3 +3,9 @@ node_modules
 /.cache
 /build
 .env
+
+# ignore webstorm
+.idea/
+
+# ignore mac
+.DS_Store
